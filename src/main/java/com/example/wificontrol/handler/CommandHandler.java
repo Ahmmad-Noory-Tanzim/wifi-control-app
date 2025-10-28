@@ -20,8 +20,13 @@ public class CommandHandler {
                 .flatMap(result -> ServerResponse.ok().bodyValue(result));
     }
 
-    public Mono<ServerResponse> fullscreen(ServerRequest request) {
-        return commandService.fullscreen()
+    public Mono<ServerResponse> mute(ServerRequest request) {
+        return commandService.mute()
+                .flatMap(result -> ServerResponse.ok().bodyValue(result));
+    }
+
+    public Mono<ServerResponse> shutdown(ServerRequest request) {
+        return commandService.shutdown()
                 .flatMap(result -> ServerResponse.ok().bodyValue(result));
     }
 

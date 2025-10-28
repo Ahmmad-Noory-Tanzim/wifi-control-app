@@ -13,28 +13,70 @@ public class CommandService {
     public Mono<String> openUrl(String url){
 
         try {
-            new ProcessBuilder("cmd", "/c", "taskkill /IM msedge.exe /F").start();
+            new ProcessBuilder(
+                    "node",
+                    "C:\\Users\\tanzi\\OneDrive\\Documents\\phone app\\Automation-Server\\youtubeAutomation.js",
+                    url
+            ).start();
+
+            return Mono.just("YouTube automation started: " + url);
+        } catch (IOException e) {
+            return Mono.just("Error: " + e.getMessage());
+        }
+
+        /*
+        try {
+            new ProcessBuilder(
+                    "powershell",
+                    "-command",
+                    "$wshell = New-Object -ComObject wscript.shell; " +
+                            "$wshell.AppActivate('msedge'); " +   // focus Edge window
+                            "Start-Sleep -Milliseconds 500; " +
+                            "$wshell.SendKeys('%{F4}')"
+            ).start();
 
             try {
-                Thread.sleep(1000); // wait 1 second
+                Thread.sleep(5000); // wait 1 second
             } catch (InterruptedException ignored) {
             }
 
-            new ProcessBuilder("cmd", "/c", "start", url).start();
+            new ProcessBuilder(
+                    "powershell","-command",
+                    "Start-Process 'msedge.exe' '" + url + "'; " +
+                            "Start-Sleep -Seconds 2; " +
+                            "$wshell = New-Object -ComObject wscript.shell; " +
+                            "$wshell.AppActivate('msedge'); " +
+                            "Start-Sleep -Milliseconds 500; " +
+                            "$wshell.SendKeys('{F11}'); " +
+                            "Start-Sleep -Milliseconds 5000; " +
+                            "$wshell.SendKeys('f')"
+            ).start();
+
             return Mono.just("Reopened: " + url);
 
         } catch (IOException e) {
             return Mono.just("Error: " + e.getMessage());
         }
-
+*/
     }
 
-    public Mono<String> fullscreen() {
+    public Mono<String> mute() {
 
         try {
             new ProcessBuilder("powershell", "-command",
                     "Add-Type -AssemblyName System.Windows.Forms; " +
-                            "[System.Windows.Forms.SendKeys]::SendWait('{F}')").start();
+                            "$wshell.AppActivate('msedge'); " +  // focus Edge window
+                            "[System.Windows.Forms.SendKeys]::SendWait('{M}')").start();
+            return Mono.just("Fullscreen triggered");
+        } catch (IOException e) {
+            return Mono.just("Error: " + e.getMessage());
+        }
+    }
+
+    public Mono<String> shutdown() {
+
+        try {
+            new ProcessBuilder("cmd", "/c", "taskkill /IM msedge.exe /F").start();
             return Mono.just("Fullscreen triggered");
         } catch (IOException e) {
             return Mono.just("Error: " + e.getMessage());

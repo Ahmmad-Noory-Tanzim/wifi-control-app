@@ -18,7 +18,8 @@ public class ApiRouter {
         return nest(path("/cmd"),
                 route()
                         .GET("/open", commandHandler::openUrl)
-                        .GET("/fullscreen",commandHandler::fullscreen)
+                        .GET("/mute",commandHandler::mute)
+                        .GET("/shutdown",commandHandler::shutdown)
                         .build()
                 );
 
